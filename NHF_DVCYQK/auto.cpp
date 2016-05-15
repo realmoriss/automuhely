@@ -13,11 +13,15 @@ void Auto::hozzaad(Munka* m) {
 }
 
 void Auto::torol(unsigned melyiket) {
-	delete munkak[melyiket];
-	for (int i = melyiket+1; i < db; ++i) {
-		munkak[i-1] = munkak[i];
+	if (melyiket < db) {
+		delete munkak[melyiket];
+		for (int i = melyiket + 1; i < db; ++i) {
+			munkak[i - 1] = munkak[i];
+		}
+		--db;
+	} else {
+		throw "Nem letezik a megadott sorszamu munka";
 	}
-	--db;
 }
 
 Munka& Auto::operator[](int melyik) {

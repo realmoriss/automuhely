@@ -52,6 +52,7 @@ const int main(void) {
 								std::cin >> ora;
 								if (std::cin.fail()) {
 									std::cin.clear();
+									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 									std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
 								}
 								else {
@@ -68,6 +69,7 @@ const int main(void) {
 								std::cin >> meret;
 								if (std::cin.fail()) {
 									std::cin.clear();
+									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 									std::cerr << "Ervenytelen ertek lett megadva meretnek" << std::endl;
 								}
 								else {
@@ -75,6 +77,7 @@ const int main(void) {
 									std::cin >> ora;
 									if (std::cin.fail()) {
 										std::cin.clear();
+										std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 										std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
 									}
 									else {
@@ -91,6 +94,7 @@ const int main(void) {
 								std::cin >> ora;
 								if (std::cin.fail()) {
 									std::cin.clear();
+									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 									std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
 								}
 								else {
@@ -145,6 +149,19 @@ const int main(void) {
 							unsigned sorszam;
 							std::cout << "Irja be hanyadik munkat akarja torolni: ";
 							std::cin >> sorszam;
+							if (std::cin.fail()) {
+								std::cin.clear();
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+								std::cerr << "Ervenytelen ertek lett megadva sorszamnak" << std::endl;
+							}
+							else {
+								try {
+									aut->torol(sorszam);
+									std::cout << "Munka torolve!" << std::endl;
+								} catch (const char* hiba) {
+									std::cerr << "Hiba a torlesnel: " << hiba << std::endl;
+								}
+							}
 						}
 						else {
 							std::cerr << "A keresett rendszam nem talalhato" << std::endl;
