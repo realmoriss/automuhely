@@ -1,6 +1,4 @@
-#include <iostream>
 #include "memtrace.h"
-
 #include "elektromos_hiba.h"
 
 void ElektromosHiba::print(std::ostream& os) const {

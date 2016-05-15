@@ -1,13 +1,14 @@
 #ifndef _KAROSSZERIA_HIBA_H_
 #define _KAROSSZERIA_HIBA_H_
 
+#include <string>
 #include "munka.h"
 
 class KarosszeriaHiba :public Munka {
-	String szin;
+	std::string szin;
 	double meret;
 public:
-	KarosszeriaHiba(int munkaOra, String szin, double meret) : Munka(munkaOra), szin(szin), meret(meret) {}
+	KarosszeriaHiba(int munkaOra, const char* szin, double meret) : Munka(munkaOra), szin(szin), meret(meret) {}
 	void print(std::ostream& os) const;
 	~KarosszeriaHiba() {}
 };

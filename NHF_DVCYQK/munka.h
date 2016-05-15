@@ -1,7 +1,7 @@
 #ifndef _MUNKA_H_
 #define _MUNKA_H_
 
-#include "string_sajat.h"
+#include <iostream>
 
 class Munka {
 	int munkaOra;

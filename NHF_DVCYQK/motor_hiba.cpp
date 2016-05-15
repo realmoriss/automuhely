@@ -1,6 +1,4 @@
-#include <iostream>
 #include "memtrace.h"
-
 #include "motor_hiba.h"
 
 void MotorHiba::print(std::ostream& os) const {

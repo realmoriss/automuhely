@@ -26,16 +26,15 @@
     <ClCompile Include="motor_hiba.cpp" />
     <ClCompile Include="munka.cpp" />
     <ClCompile Include="nhf.cpp" />
-    <ClCompile Include="string_sajat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="auto.h" />
     <ClInclude Include="elektromos_hiba.h" />
     <ClInclude Include="karosszeria_hiba.h" />
+    <ClInclude Include="muhely.hpp" />
     <ClInclude Include="memtrace.h" />
     <ClInclude Include="motor_hiba.h" />
     <ClInclude Include="munka.h" />
-    <ClInclude Include="string_sajat.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ED66C662-CF84-4973-9E1F-4466BF12C92A}</ProjectGuid>

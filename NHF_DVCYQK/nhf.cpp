@@ -1,56 +1,206 @@
 #include <iostream>
+#include <string>
 #include "memtrace.h"
 
-#include "string.h"
 #include "elektromos_hiba.h"
 #include "karosszeria_hiba.h"
 #include "motor_hiba.h"
 #include "auto.h"
-
-void teszt_1() {
-	Auto a("DVCYQK");
-	// Kiirja az auto rendszamat
-	std::cout << "Rendszam: " << a.getRendszam() << std::endl;
-	// Kiirja, hogy hany db munkat vettunk fel az autohoz
-	std::cout << "Munka db: " << a.getdb() << std::endl;
-}
-
-
-void teszt_2() {
-	Auto a("DVCYQK");
-	// Hozzaadunk nehany munkat
-	a.hozzaad(new ElektromosHiba(2, "2m rezkabel, 4db saru"));
-	a.hozzaad(new MotorHiba(1, "olajcsere"));
-	a.hozzaad(new KarosszeriaHiba(6, "piros", 0.02));
-
-	a[0].print(std::cout); std::cout << std::endl; // ElektromosHiba kiirasa
-	a[1].print(std::cout); std::cout << std::endl; // MotorHiba kiirasa
-	a[2].print(std::cout); std::cout << std::endl; // KarosszeriaHiba kiirasa
-}
-
-void teszt_3() {
-	Auto a("DVCYQK");
-
-	a.hozzaad(new ElektromosHiba(2, "2m rezkabel, 4db saru"));
-	a.hozzaad(new MotorHiba(1, "olajcsere"));
-	a.hozzaad(new KarosszeriaHiba(6, "piros", 0.02));
-
-	a.torol(0);	// ElektromosHiba torlodik
-	a.torol(1); // KarosszeriaHiba torlodik
-	a.torol(0); // MotorHiba torlodik
-}
-
-void teszt_4() {
-	Auto* muhely[100];
-	muhely[0] = new Auto("ABC-123");
-	muhely[1] = new Auto("DEF-456");
-	delete muhely[0];
-	delete muhely[1];
-}
+#include "muhely.hpp"
 
 const int main(void) {
-	teszt_1();
-	teszt_2();
-	teszt_3();
+	Muhely<500> muh;
+	std::string valasz;
+
+	while (!std::cin.eof()) {
+		std::cout << "Parancsok: hozzaad, torol, listaz, kilep" << std::endl;
+		std::cin >> valasz;
+
+		if (!valasz.compare("hozzaad")) {
+			std::cout << "Mit szeretne hozzaadni? (auto, munka)" << std::endl;
+			std::cin >> valasz;
+			if (!valasz.compare("auto")) {
+				std::cout << "Irja be a rendszamot: ";
+				std::cin >> valasz;
+				if (valasz.length() > 0) {
+					try {
+						muh.autot_felvesz(valasz.c_str());
+					}
+					catch (const char* hiba) {
+						std::cerr << "Hiba a hozzaadasnal: " << hiba << std::endl;
+					}
+				}
+				else {
+					std::cerr << "Ures rendszam lett megadva auto hozzaadasanal" << std::endl;
+				}
+			}
+			else if (!valasz.compare("munka")) {
+				std::cout << "Irja be a rendszamot: ";
+				std::cin >> valasz;
+				if (valasz.length() > 0) {
+					try {
+						Auto* aut = muh.autot_keres(valasz.c_str());
+						if (aut != nullptr) {
+							std::cout << "Milyen munkat szeretne hozzaadni? (motor, karosszeria, elektromos)" << std::endl;
+							std::cin >> valasz;
+							int ora;
+							if (!valasz.compare("motor")) {
+								std::cout << "Irja be a motor fajtajat: ";
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+								std::getline(std::cin, valasz);
+								std::cout << "Irja be a becsult munkaorat: ";
+								std::cin >> ora;
+								if (std::cin.fail()) {
+									std::cin.clear();
+									std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
+								}
+								else {
+									aut->hozzaad(new MotorHiba(ora, valasz.c_str()));
+									std::cout << "Munka hozzaadva!" << std::endl;
+								}
+							}
+							else if (!valasz.compare("karosszeria")) {
+								std::cout << "Irja be a szint: ";
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+								std::getline(std::cin, valasz);
+								std::cout << "Irja be a meretet: ";
+								double meret;
+								std::cin >> meret;
+								if (std::cin.fail()) {
+									std::cin.clear();
+									std::cerr << "Ervenytelen ertek lett megadva meretnek" << std::endl;
+								}
+								else {
+									std::cout << "Irja be a becsult munkaorat: ";
+									std::cin >> ora;
+									if (std::cin.fail()) {
+										std::cin.clear();
+										std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
+									}
+									else {
+										aut->hozzaad(new KarosszeriaHiba(ora, valasz.c_str(), meret));
+										std::cout << "Munka hozzaadva!" << std::endl;
+									}
+								}
+							}
+							else if (!valasz.compare("elektromos")) {
+								std::cout << "Irja be az alkatreszeket: ";
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+								std::getline(std::cin, valasz);
+								std::cout << "Irja be a becsult munkaorat: ";
+								std::cin >> ora;
+								if (std::cin.fail()) {
+									std::cin.clear();
+									std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
+								}
+								else {
+									aut->hozzaad(new ElektromosHiba(ora, valasz.c_str()));
+									std::cout << "Munka hozzaadva!" << std::endl;
+								}
+							}
+							else {
+								std::cerr << "Nem megfelelo tipus torles parancsnal" << std::endl;
+							}
+						}
+						else {
+							std::cerr << "A keresett rendszam nem talalhato" << std::endl;
+						}
+					} catch (const char* hiba) {
+						std::cerr << "Hiba a keresesnel: " << hiba << std::endl;
+					}
+				}
+				else {
+					std::cerr << "Ures rendszam lett megadva munka hozzaadasanal" << std::endl;
+				}
+			}
+			else {
+				std::cerr << "Nem megfelelo tipus hozzaadas parancsnal" << std::endl;
+			}
+		}
+		else if (!valasz.compare("torol")) {
+			std::cout << "Mit szeretne torolni? (auto, munka)" << std::endl;
+			std::cin >> valasz;
+			if (!valasz.compare("auto")) {
+				std::cout << "Irja be a rendszamot: ";
+				std::cin >> valasz;
+				if (valasz.length() > 0) {
+					try {
+						muh.autot_torol(valasz.c_str());
+					}
+					catch (const char* hiba) {
+						std::cerr << "Hiba a torlesnel: " << hiba << std::endl;
+					}
+				}
+				else {
+					std::cerr << "Ures rendszam lett megadva torlesnel" << std::endl;
+				}
+			}
+			else if (!valasz.compare("munka")) {
+				std::cout << "Irja be a rendszamot: ";
+				std::cin >> valasz;
+				if (valasz.length() > 0) {
+					try {
+						Auto* aut = muh.autot_keres(valasz.c_str());
+						if (aut != nullptr) {
+							unsigned sorszam;
+							std::cout << "Irja be hanyadik munkat akarja torolni: ";
+							std::cin >> sorszam;
+						}
+						else {
+							std::cerr << "A keresett rendszam nem talalhato" << std::endl;
+						}
+					}
+					catch (const char* hiba) {
+						std::cerr << "Hiba a keresesnel: " << hiba << std::endl;
+					}
+				}
+				else {
+					std::cerr << "Ures rendszam lett megadva munka hozzaadasanal" << std::endl;
+				}
+			}
+			else {
+				std::cerr << "Nem megfelelo tipus torles parancsnal" << std::endl;
+			}
+
+		}
+		else if (!valasz.compare("listaz")) {
+			std::cout << "Mit szeretne listazni? (auto, mind)" << std::endl;
+			std::cin >> valasz;
+			if (!valasz.compare("auto")) {
+				std::cout << "Irja be a rendszamot: ";
+				std::cin >> valasz;
+				if (valasz.length() > 0) {
+					try {
+						Auto* aut = muh.autot_keres(valasz.c_str());
+						if (aut != nullptr) {
+							aut->kiir();
+						}
+						else {
+							std::cerr << "A keresett rendszam nem talalhato" << std::endl;
+						}
+					}
+					catch (const char* hiba) {
+						std::cerr << "Hiba a keresesnel: " << hiba << std::endl;
+					}
+				}
+				else {
+					std::cerr << "Ures rendszam lett megadva listazasnal" << std::endl;
+				}
+			}
+			else if (!valasz.compare("mind")) {
+				muh.listaz_mind();
+			}
+			else {
+				std::cerr << "Nem megfelelo tipus listazas parancsnal" << std::endl;
+			}
+		}
+		else if (!valasz.compare("kilep")) {
+			return 0;
+		}
+		else {
+			std::cerr << "Nem megfelelo parancs" << std::endl;
+		}
+	}
+
 	return 0;
 }

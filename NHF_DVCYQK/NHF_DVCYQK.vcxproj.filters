@@ -36,15 +36,9 @@
     <ClCompile Include="memtrace.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="string_sajat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="auto.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="munka.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="karosszeria_hiba.h">
@@ -56,10 +50,13 @@
     <ClInclude Include="elektromos_hiba.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="string_sajat.h">
+    <ClInclude Include="memtrace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="memtrace.h">
+    <ClInclude Include="munka.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="muhely.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

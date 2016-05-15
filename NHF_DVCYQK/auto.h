@@ -1,28 +1,28 @@
 #ifndef _AUTO_H_
 #define _AUTO_H_
 
-#include "string_sajat.h"
+#include <string>
 #include "munka.h"
 
 const int MAX_MUNKAK = 100;
 
 class Auto {
-	String rendszam;
+	std::string rendszam;
 	Munka* munkak[MAX_MUNKAK];
-	int db;
-	Auto(const Auto&);
-	Auto& operator=(const Auto&);
+	size_t db;
+	Auto(const Auto&) {}
+	Auto& operator=(const Auto&) {}
 public:
-	Auto(String rendszam): rendszam(rendszam), db() {}
+	Auto(const char* rendszam): rendszam(rendszam), db() {}
 	~Auto();
 
 	void hozzaad(Munka*);
-	void torol(int);
+	void torol(unsigned);
 	Munka& operator[](int);
 	const Munka& operator[](int) const;
 
-	String getRendszam() const;
-	int getdb() const;
+	std::string getRendszam() const;
+	size_t getdb() const;
 
 	void kiir(std::ostream& os = std::cout) const;
 };
