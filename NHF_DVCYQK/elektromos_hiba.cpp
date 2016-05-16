@@ -6,4 +6,4 @@ void ElektromosHiba::print(std::ostream& os) const {
 	os << "Elektromos hiba" << std::endl;
 	os << "Alkatreszek: " << alkatreszek << std::endl;
 	Munka::print(os);
-};
+}

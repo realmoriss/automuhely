@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <limits>
+#include <cstddef>
 #include "memtrace.h"
 
 #include "elektromos_hiba.h"
@@ -8,7 +10,7 @@
 #include "auto.h"
 #include "muhely.hpp"
 
-const int main(void) {
+int main(void) {
 	Muhely<500> muh;
 	std::string valasz;
 
@@ -40,74 +42,69 @@ const int main(void) {
 				if (valasz.length() > 0) {
 					try {
 						Auto* aut = muh.autot_keres(valasz.c_str());
-						if (aut != nullptr) {
-							std::cout << "Milyen munkat szeretne hozzaadni? (motor, karosszeria, elektromos)" << std::endl;
-							std::cin >> valasz;
-							int ora;
-							if (!valasz.compare("motor")) {
-								std::cout << "Irja be a motor fajtajat: ";
+						std::cout << "Milyen munkat szeretne hozzaadni? (motor, karosszeria, elektromos)" << std::endl;
+						std::cin >> valasz;
+						int ora;
+						if (!valasz.compare("motor")) {
+							std::cout << "Irja be a motor fajtajat: ";
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+							std::getline(std::cin, valasz);
+							std::cout << "Irja be a becsult munkaorat: ";
+							std::cin >> ora;
+							if (std::cin.fail()) {
+								std::cin.clear();
 								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-								std::getline(std::cin, valasz);
-								std::cout << "Irja be a becsult munkaorat: ";
-								std::cin >> ora;
-								if (std::cin.fail()) {
-									std::cin.clear();
-									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-									std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
-								}
-								else {
-									aut->hozzaad(new MotorHiba(ora, valasz.c_str()));
-									std::cout << "Munka hozzaadva!" << std::endl;
-								}
-							}
-							else if (!valasz.compare("karosszeria")) {
-								std::cout << "Irja be a szint: ";
-								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-								std::getline(std::cin, valasz);
-								std::cout << "Irja be a meretet: ";
-								double meret;
-								std::cin >> meret;
-								if (std::cin.fail()) {
-									std::cin.clear();
-									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-									std::cerr << "Ervenytelen ertek lett megadva meretnek" << std::endl;
-								}
-								else {
-									std::cout << "Irja be a becsult munkaorat: ";
-									std::cin >> ora;
-									if (std::cin.fail()) {
-										std::cin.clear();
-										std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-										std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
-									}
-									else {
-										aut->hozzaad(new KarosszeriaHiba(ora, valasz.c_str(), meret));
-										std::cout << "Munka hozzaadva!" << std::endl;
-									}
-								}
-							}
-							else if (!valasz.compare("elektromos")) {
-								std::cout << "Irja be az alkatreszeket: ";
-								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-								std::getline(std::cin, valasz);
-								std::cout << "Irja be a becsult munkaorat: ";
-								std::cin >> ora;
-								if (std::cin.fail()) {
-									std::cin.clear();
-									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-									std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
-								}
-								else {
-									aut->hozzaad(new ElektromosHiba(ora, valasz.c_str()));
-									std::cout << "Munka hozzaadva!" << std::endl;
-								}
+								std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
 							}
 							else {
-								std::cerr << "Nem megfelelo tipus torles parancsnal" << std::endl;
+								aut->hozzaad(new MotorHiba(ora, valasz.c_str()));
+								std::cout << "Munka hozzaadva!" << std::endl;
+							}
+						}
+						else if (!valasz.compare("karosszeria")) {
+							std::cout << "Irja be a szint: ";
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+							std::getline(std::cin, valasz);
+							std::cout << "Irja be a meretet: ";
+							double meret;
+							std::cin >> meret;
+							if (std::cin.fail()) {
+								std::cin.clear();
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+								std::cerr << "Ervenytelen ertek lett megadva meretnek" << std::endl;
+							}
+							else {
+								std::cout << "Irja be a becsult munkaorat: ";
+								std::cin >> ora;
+								if (std::cin.fail()) {
+									std::cin.clear();
+									std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+									std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
+								}
+								else {
+									aut->hozzaad(new KarosszeriaHiba(ora, valasz.c_str(), meret));
+									std::cout << "Munka hozzaadva!" << std::endl;
+								}
+							}
+						}
+						else if (!valasz.compare("elektromos")) {
+							std::cout << "Irja be az alkatreszeket: ";
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+							std::getline(std::cin, valasz);
+							std::cout << "Irja be a becsult munkaorat: ";
+							std::cin >> ora;
+							if (std::cin.fail()) {
+								std::cin.clear();
+								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+								std::cerr << "Ervenytelen ertek lett megadva idonek" << std::endl;
+							}
+							else {
+								aut->hozzaad(new ElektromosHiba(ora, valasz.c_str()));
+								std::cout << "Munka hozzaadva!" << std::endl;
 							}
 						}
 						else {
-							std::cerr << "A keresett rendszam nem talalhato" << std::endl;
+							std::cerr << "Nem megfelelo tipus torles parancsnal" << std::endl;
 						}
 					} catch (const char* hiba) {
 						std::cerr << "Hiba a keresesnel: " << hiba << std::endl;
@@ -145,26 +142,21 @@ const int main(void) {
 				if (valasz.length() > 0) {
 					try {
 						Auto* aut = muh.autot_keres(valasz.c_str());
-						if (aut != nullptr) {
-							unsigned sorszam;
-							std::cout << "Irja be hanyadik munkat akarja torolni: ";
-							std::cin >> sorszam;
-							if (std::cin.fail()) {
-								std::cin.clear();
-								std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-								std::cerr << "Ervenytelen ertek lett megadva sorszamnak" << std::endl;
-							}
-							else {
-								try {
-									aut->torol(sorszam);
-									std::cout << "Munka torolve!" << std::endl;
-								} catch (const char* hiba) {
-									std::cerr << "Hiba a torlesnel: " << hiba << std::endl;
-								}
-							}
+						unsigned sorszam;
+						std::cout << "Irja be hanyadik munkat akarja torolni: ";
+						std::cin >> sorszam;
+						if (std::cin.fail()) {
+							std::cin.clear();
+							std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+							std::cerr << "Ervenytelen ertek lett megadva sorszamnak" << std::endl;
 						}
 						else {
-							std::cerr << "A keresett rendszam nem talalhato" << std::endl;
+							try {
+								aut->torol(sorszam);
+								std::cout << "Munka torolve!" << std::endl;
+							} catch (const char* hiba) {
+								std::cerr << "Hiba a torlesnel: " << hiba << std::endl;
+							}
 						}
 					}
 					catch (const char* hiba) {
@@ -189,12 +181,7 @@ const int main(void) {
 				if (valasz.length() > 0) {
 					try {
 						Auto* aut = muh.autot_keres(valasz.c_str());
-						if (aut != nullptr) {
-							aut->kiir();
-						}
-						else {
-							std::cerr << "A keresett rendszam nem talalhato" << std::endl;
-						}
+						aut->kiir();
 					}
 					catch (const char* hiba) {
 						std::cerr << "Hiba a keresesnel: " << hiba << std::endl;

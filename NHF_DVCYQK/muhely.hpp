@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstddef>
 
 #include "auto.h"
 
@@ -36,14 +37,14 @@ Auto* Muhely<N>::autot_felvesz(const char* rendszam) {
 			return muhely[db++];
 		}
 		else {
-			throw "A mmegadott rendszam mar fel lett veve";
+			throw "A megadott rendszam mar fel lett veve";
 		}
 	}
 	else {
 		throw "Nem fer tobb auto a muhelybe";
 	}
 
-	return nullptr;
+	return NULL;
 }
 
 template <unsigned N>
@@ -54,7 +55,7 @@ Auto* Muhely<N>::autot_keres(const char* rendszam) const {
 		}
 	}
 	throw "Az auto nem talalhato";
-	return nullptr;
+	return NULL;
 }
 
 template <unsigned N>

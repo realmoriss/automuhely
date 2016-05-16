@@ -10,16 +10,14 @@ class Auto {
 	std::string rendszam;
 	Munka* munkak[MAX_MUNKAK];
 	size_t db;
-	Auto(const Auto&) {}
-	Auto& operator=(const Auto&) {}
+	Auto(const Auto&);
+	Auto& operator=(const Auto&);
 public:
 	Auto(const char* rendszam): rendszam(rendszam), db() {}
 	~Auto();
 
 	void hozzaad(Munka*);
 	void torol(unsigned);
-	Munka& operator[](int);
-	const Munka& operator[](int) const;
 
 	std::string getRendszam() const;
 	size_t getdb() const;
